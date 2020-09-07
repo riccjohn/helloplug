@@ -19,3 +19,18 @@ Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_do
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at [https://hexdocs.pm/helloplug](https://hexdocs.pm/helloplug).
 
+---
+
+To connect Helloplug to cowboy:
+```zsh
+$ iex -S mix
+```
+
+```elixir
+{:ok, _} = Plug.Adapters.Cowboy.http Helloplug, []
+```
+
+reload session
+```elixir
+r Helloplug
+```

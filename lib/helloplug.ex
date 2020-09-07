@@ -1,18 +1,31 @@
+defmodule Router do
+  defmacro __using__(_opts) do
+    quote do
+      def init(options) do
+        options
+      end
+
+      def call(conn, _opts) do
+        route(conn.method, conn.path_info, conn)
+      end
+    end
+  end
+end
+
 defmodule Helloplug do
-  @moduledoc """
-  Documentation for `Helloplug`.
-  """
+  use Router
 
-  @doc """
-  Hello world.
+  def route("GET", ["hello"], conn) do
+    # this route is for /hello
+    conn |> Plug.Conn.send_resp(200, "Hello, world!")
+  end
 
-  ## Examples
+  def route("GET", ["users", user_id], conn) do
+    # this route is for /users/<user_id>
+    conn |> Plug.Conn.send_resp(200, "You requested user #{user_id}")
+  end
 
-      iex> Helloplug.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  def route(_method, _path, conn) do
+    conn |> Plug.Conn.send_resp(404, "Couldn't find that page, sorry!")
   end
 end
