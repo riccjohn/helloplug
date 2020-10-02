@@ -1,31 +1,29 @@
-defmodule Router do
-  defmacro __using__(_opts) do
-    quote do
-      def init(options) do
-        options
-      end
+defmodule Helloplug do
+  require EEx
 
-      def call(conn, _opts) do
-        route(conn.method, conn.path_info, conn)
-      end
-    end
+  def init(default_opts) do
+    IO.puts "starting up Helloplug ..."
+    default_opts
+  end
+
+  def call(conn, _opts) do
+    WebsiteRouter.route(conn.method, conn.path_info, conn)
   end
 end
 
-defmodule Helloplug do
-  use Router
-
+defmodule WebsiteRouter do
   def route("GET", ["hello"], conn) do
-    # this route is for /hello
-    conn |> Plug.Conn.send_resp(200, "Hello, world!")
+    conn
+    |> Plug.Conn.send_resp(200, "Hello, world!")
   end
 
-  def route("GET", ["users", user_id], conn) do
-    # this route is for /users/<user_id>
-    conn |> Plug.Conn.send_resp(200, "You requested user #{user_id}")
+  def route("GET", ["hello", name], conn) do
+    conn
+    |> Plug.Conn.send_resp(200, "Hello, #{name}!")
   end
 
   def route(_method, _path, conn) do
+    # this route is called if no other routes match
     conn |> Plug.Conn.send_resp(404, "Couldn't find that page, sorry!")
   end
 end

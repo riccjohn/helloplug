@@ -25,12 +25,14 @@ To connect Helloplug to cowboy:
 ```zsh
 $ iex -S mix
 ```
-
+Start a live server
 ```elixir
 {:ok, _} = Plug.Adapters.Cowboy.http Helloplug, []
 ```
 
-reload session
+Visit `localhost:4000`
+
+Reload session to update with any code changes
 ```elixir
 r Helloplug
 ```
